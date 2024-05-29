@@ -68,15 +68,15 @@ y_train = y_train.astype(int)
 y_test = y_test.astype(int)
 
 
-mlflow.set_experiment("Clasificacion_activacion_MGD")
-cambio = "elu"
+mlflow.set_experiment("Clasificacion_variables_MGD")
+#cambio = 15
 # Definir y entrenar el modelo
-with mlflow.start_run(run_name=cambio):
+with mlflow.start_run(run_name="1"):
     
-    neurons = 32
-    activation = cambio
+    neurons = 128
+    activation = "relu"
     optimizer = "Adam"
-    epocas = 6
+    epocas = 15
     input_shape = (X_train.shape[1],)
     model = tf.keras.Sequential([
         tf.keras.layers.Input(shape=input_shape),
