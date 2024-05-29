@@ -15,62 +15,6 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 # Cargar y preparar los datos
 df = pd.read_csv('data_limpieza.csv')
-df = df.iloc[50000:]
-df = df.dropna()
-
-# Variables de entrada (solo las columnas especificadas)
-columnas_X = ['PERIODO', 'COLE_AREA_UBICACION', 'COLE_BILINGUE', 'COLE_CALENDARIO',
-       'COLE_CARACTER', 'COLE_DEPTO_UBICACION', 'COLE_GENERO', 'COLE_JORNADA',
-       'COLE_MCPIO_UBICACION', 'COLE_NATURALEZA',
-       'COLE_NOMBRE_ESTABLECIMIENTO', 'COLE_NOMBRE_SEDE', 'ESTU_GENERO',
-       'ESTU_PRIVADO_LIBERTAD', 'FAMI_CUARTOSHOGAR', 'FAMI_EDUCACIONMADRE',
-       'FAMI_EDUCACIONPADRE', 'FAMI_ESTRATOVIVIENDA', 'FAMI_PERSONASHOGAR',
-       'FAMI_TIENEAUTOMOVIL', 'FAMI_TIENECOMPUTADOR', 'FAMI_TIENEINTERNET',
-       'FAMI_TIENELAVADORA']
-
-X = df[columnas_X]
-# Variable de salida
-y = df['PUNT_GLOBAL']
-
-# Columnas categóricas y numéricas
-categorical_columns = X.select_dtypes(include=['object']).columns.tolist()
-numeric_columns = X.select_dtypes(include=['number']).columns.tolist()
-
-# Preprocesamiento: OneHotEncoding para variables categóricas, escalado para numéricas
-preprocessor = ColumnTransformer(
-    transformers=[
-        ('num', StandardScaler(), numeric_columns),
-        ('cat', OneHotEncoder(handle_unknown='ignore', sparse_output=False), categorical_columns)
-    ])
-
-# Dividir los datos en conjuntos de entrenamiento y prueba
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-# Crear pipeline
-pipeline = Pipeline(steps=[
-    ('preprocessor', preprocessor)
-])
-
-# Preprocesar los datos
-X_train = pipeline.fit_transform(X_train)
-X_test = pipeline.transform(X_test)
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from tensorflow import keras
-from tensorflow.keras import layers
-import mlflow
-import mlflow.sklearn
-import numpy as np
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-import tensorflow as tf
-import mlflow.tensorflow
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-
-
-# Cargar y preparar los datos
-df = pd.read_csv('data_limpieza.csv')
 df = df.head(70000)
 df = df.dropna()
 # df = df.iloc[50000:]
